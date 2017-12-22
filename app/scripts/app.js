@@ -63,10 +63,11 @@ Hint: you'll probably still need to use .map.
     .then(function(response) {
 
       addSearchHeader(response.query);
-
-      response.results.map(function(url) {
-        getJSON(url).then(createPlanetThumb);
-      });
+      Promise.all(response.results).then(function(r) {
+        r.map(function(url) {
+          getJSON(url).then(createPlanetThumb);
+        });
+      })
     });
   });
 })(document);
